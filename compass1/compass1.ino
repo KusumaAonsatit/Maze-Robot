@@ -1,11 +1,14 @@
+
+
 /*
  * This example shows how to use the Arduino-HMC5983 library,
  * by configuring up to 220Hz the HMC5983 with the DRDY int.
  */
-#include <HMC5983.h>
 #include <Wire.h>
-HMC5983 compass;
+#include <HMC5983.h>
 
+
+HMC5983 compass;
 boolean compass_rdy = false;
 uint8_t counter = 0;
 uint32_t last_read_time = 0;
@@ -17,9 +20,9 @@ void readCompass_ISR() {
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600); // this is going to be hot... :)
+  Serial.begin(250000); // this is going to be hot... :)
 
-  while (!compass.begin(readCompass_ISR,0)) {
+  while (!compass.begin(readCompass_ISR, 0)) {
     Serial.println("HMC5983 Problem");
     delay(500);
   }  
@@ -39,13 +42,3 @@ void loop() {
     counter++;
   }
 }
-
-
-
-
-
-
-
-
-
-//5735512107
