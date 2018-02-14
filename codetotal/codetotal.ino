@@ -1,4 +1,6 @@
 #include <NewPing.h>
+#include <HMC5983.h>
+#include <Wire.h>
 
 //Tell the Arduino where the sensor is hooked up
 NewPing sonar(11, 10); //trig,echo
@@ -22,6 +24,7 @@ int pinB2 = 7;
 
 long inches,inchesl,inchesr;
 
+HMC5983 compass;
 
 void setup() {
   Serial.begin(9600);
@@ -32,6 +35,8 @@ void setup() {
   pinMode(enableB, OUTPUT);
   pinMode(pinB1, OUTPUT);
   pinMode(pinB2, OUTPUT);
+
+  compass.begin(); // use "true" if you need some debug information
 }
 
 void loop() {
@@ -80,6 +85,13 @@ void loop() {
   motorFront(255);  
   }//other 
 }
+
+void _compass() {
+  float c = -999;
+  c = compass.read();
+  delay(500);
+}
+
 void motorFront(int speed){
   
   // Motor A left
@@ -174,3 +186,4 @@ void motorTurnright1(int speed){
     
     delay(1800);
 }
+

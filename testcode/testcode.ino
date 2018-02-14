@@ -23,8 +23,9 @@ int pinB1 = 5;
 int pinB2 = 7;
 
 long inches,inchesl,inchesr;
-
+int c,com;
 HMC5983 compass;
+
 
 void setup() {
   Serial.begin(9600);
@@ -47,48 +48,22 @@ void loop() {
   inchesl = sonarl.ping_in();
   inchesr = sonarr.ping_in();
 
+  _compass();
+
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
   motorFront(200);  
   }//1
- else if(inchesl < 4 && inches < 6 && inchesr < 4){  
-  motorTurnback(200); 
-  }//2
  else if(inchesl > 6 && inches < 10 && inchesr < 6){  
   motorTurnleft(240); 
-  }//3
- else if(inchesl > 6 && inches > 6 && inchesr < 10){  
-  motorTurnleft(240);
-  if(inches > 6 ){    
-      motorFront1(200);
-      }
-  }//4
- else if(inchesl > 6 && inches < 6 && inchesr > 6){  
-  motorTurnleft(240); 
-  }//5
- else if(inchesl > 6 && inches > 6 && inchesr > 6){  
-  motorTurnleft1(240); 
-  if(inches > 6 ){    
-      motorFront1(200);
-      }
-  }//6
- else if(inchesl < 6 && inches < 8 && inchesr > 6){  
-  motorTurnright(240);
-  }//7
- else if(inchesl < 6 && inches < 2 && inchesr > 6){  
-  motorTurnright1(200);
-  }//8
- else if(inchesl < 6 && inches > 6 && inchesr > 6){  
-  motorFront(255); 
-  }//9
- else { 
-  motorFront(255);  
-  }//other 
+  com = c-90;
+  }//2
 }
 
 void _compass() {
   float c = -999;
   c = compass.read();
+  Serial.println(c);
   delay(500);
 }
 
@@ -105,18 +80,19 @@ void motorFront(int speed){
     
     delay(50);
 }
-void motorFront1(int speed){
-  
-  // Motor A 
-     analogWrite(enableA, speed);
-     digitalWrite(pinA1, LOW);
-     digitalWrite(pinA2, HIGH);
+void motorTurnleft(int speed){
+
+ // Motor A 
+    analogWrite(enableA, 0);
+    digitalWrite(pinA1, HIGH);
+    digitalWrite(pinA2, LOW);
  // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    
-    delay(2000);
+    if(c=com){
+      motorFront(200);
+    }
+    //delay(1700);
+
 }
-
-
