@@ -24,5 +24,5 @@ void loop() {
   } else {
     Serial.println(c);
   }
-  delay(500);
+  //delay(500);
 }

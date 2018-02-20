@@ -51,36 +51,24 @@ void loop() {
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
   motorFront(200);  
   }//1
- else if(inchesl < 4 && inches < 6 && inchesr < 4){  
-  motorTurnback(200); 
-  }//2
- else if(inchesl > 6 && inches < 10 && inchesr < 6){  
-  motorTurnleft(240); 
-  }//3
- else if(inchesl > 6 && inches > 6 && inchesr < 10){  
-  motorTurnleft(240);
-  if(inches > 6 ){    
-      motorFront1(200);
-      }
-  }//4
- else if(inchesl > 6 && inches < 6 && inchesr > 6){  
-  motorTurnleft(240); 
-  }//5
- else if(inchesl > 6 && inches > 6 && inchesr > 6){  
-  motorTurnleft1(240); 
-  if(inches > 6 ){    
-      motorFront1(200);
-      }
-  }//6
- else if(inchesl < 6 && inches < 8 && inchesr > 6){  
-  motorTurnright(240);
-  }
- else if(inchesl < 6 && inches < 2 && inchesr > 6){  
-  motorTurnright1(200);
-  }
  else if(inchesl < 6 && inches > 6 && inchesr > 6){  
   motorFront(255); 
-  }//8
+  }//2
+ else if(inchesl > 6 && inches > 6 && inchesr < 6){  
+  motorFront(255); 
+  }//3
+ else if(inchesl < 4 && inches < 6 && inchesr < 4){  
+  com = c-180; 
+  motorTurnback(200); 
+  }//4
+ else if(inchesl > 6 && inches < 10 && inchesr < 6){ 
+  com = c-90; 
+  motorTurnleft(240); 
+  }//5
+ else if(inchesl < 6 && inches < 8 && inchesr > 6){ 
+  com = c-90;  
+  motorTurnright(240);
+  }//6
  else { 
   motorFront(255);  
   }//other 
@@ -94,96 +82,59 @@ void _compass() {
 
 void motorFront(int speed){
   
-  // Motor A left
+    // Motor A left
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
- // Motor B
+    // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
     
     delay(50);
 }
-void motorFront1(int speed){
-  
-  // Motor A 
-     analogWrite(enableA, speed);
-     digitalWrite(pinA1, LOW);
-     digitalWrite(pinA2, HIGH);
- // Motor B
-    analogWrite(enableB, speed); 
-    digitalWrite(pinB1, LOW);
-    digitalWrite(pinB2, HIGH);
-    
-    delay(2000);
-}
+
 void motorTurnback(int speed){
 
- // Motor A 
+  while(c!=com){
+    // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
- // Motor B
+    // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    
-    delay(2100);
+  }
 
 }
 void motorTurnleft(int speed){
 
- // Motor A 
+  while(c!=com){
+    // Motor A 
     analogWrite(enableA, 0);
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
- // Motor B
+    // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    
-    delay(1600);
-}
-
-void motorTurnleft1(int speed){
-
- // Motor A 
-    analogWrite(enableA, 0);
-    digitalWrite(pinA1, HIGH);
-    digitalWrite(pinA2, LOW);
- // Motor B
-    analogWrite(enableB, speed); 
-    digitalWrite(pinB1, LOW);
-    digitalWrite(pinB2, HIGH);
-    
-    delay(1700);
+  }
 
 }
+
 void motorTurnright(int speed){
-  
- // Motor A
+
+  while(c!=com){
+    // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2,HIGH );
- // Motor B          
+    // Motor B          
     analogWrite(enableB, 0); 
     digitalWrite(pinB1, HIGH);
-    digitalWrite(pinB2, LOW);       
-    
-    delay(1700);
-}
-void motorTurnright1(int speed){
-  
- // Motor A
-    analogWrite(enableA, speed);
-    digitalWrite(pinA1, LOW);
-    digitalWrite(pinA2,HIGH );
- // Motor B           
-    analogWrite(enableB, 0); 
-    digitalWrite(pinB1, HIGH);
-    digitalWrite(pinB2, LOW);       
-    
-    delay(1800);
+    digitalWrite(pinB2, LOW); 
+  }
+
 }
 

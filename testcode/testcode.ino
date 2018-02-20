@@ -8,7 +8,7 @@ NewPing sonarl(9, 8);
 NewPing sonarr(13, 12);
 
 void motorFront(int speed);
-void motorFront1(int speed);
+//void motorFront1(int speed);
 void motorTurnback(int speed);
 void motorTurnright(int speed);
 void motorTurnleft(int speed);
@@ -54,17 +54,18 @@ void loop() {
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
   motorFront(200);  
   }//1
- else if(inchesl > 6 && inches < 10 && inchesr < 6){  
-  motorTurnleft(240); 
-  com = c-90;
+  else if(inchesl < 4 && inches < 6 && inchesr < 4){  
+  motorTurnback(220);
+  com = c-180; 
   }//2
+
 }
 
 void _compass() {
   float c = -999;
   c = compass.read();
-  Serial.println(c);
-  delay(500);
+  //Serial.println(c);
+  //delay(500);
 }
 
 void motorFront(int speed){
@@ -80,19 +81,19 @@ void motorFront(int speed){
     
     delay(50);
 }
-void motorTurnleft(int speed){
+void motorTurnback(int speed){
 
  // Motor A 
-    analogWrite(enableA, 0);
+    analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
  // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    if(c=com){
-      motorFront(200);
+    if(c == com){
+     motorFront(200);
     }
-    //delay(1700);
+ //delay(2100);
 
 }
