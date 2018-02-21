@@ -55,8 +55,9 @@ void loop() {
   motorFront(200);  
   }//1
   else if(inchesl < 4 && inches < 6 && inchesr < 4){  
+     com = c-180; 
   motorTurnback(220);
-  com = c-180; 
+ 
   }//2
 
 }
@@ -83,17 +84,16 @@ void motorFront(int speed){
 }
 void motorTurnback(int speed){
 
- // Motor A 
+  while(c!=com){
+  // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
- // Motor B
+  // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    if(c == com){
-     motorFront(200);
-    }
- //delay(2100);
+  }
+
 
 }
