@@ -50,6 +50,12 @@ void loop() {
   inchesl = sonarl.ping_in();
   inchesr = sonarr.ping_in();
 
+   if (c == -999) {
+    Serial.println("Reading error, discarded");
+  } else {
+    Serial.println(c);
+  }
+  
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
   motorFront(200);  
@@ -72,6 +78,7 @@ void loop() {
 void _compass() {
   
   c = compass.read();
+ 
   //delay(500);
 }
 
