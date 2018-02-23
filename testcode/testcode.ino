@@ -8,7 +8,6 @@ NewPing sonarl(9, 8);
 NewPing sonarr(13, 12);
 
 void motorFront(int speed);
-void motorFront1(int speed);
 void motorTurnback(int speed);
 void motorTurnright(int speed);
 void motorTurnleft(int speed);
@@ -18,9 +17,9 @@ int enableA = 6;
 int pinA1 = 2;
 int pinA2 = 3;
 
-int enableB = 4;
-int pinB1 = 5;
-int pinB2 = 7;
+int enableB = 7;
+int pinB1 = 4;
+int pinB2 = 5;
 
 long inches,inchesl,inchesr;
 
@@ -49,12 +48,12 @@ void loop() {
   inches = sonar.ping_in();
   inchesl = sonarl.ping_in();
   inchesr = sonarr.ping_in();
+  
+  _compass();
 
-   if (c == -999) {
-    Serial.println("Reading error, discarded");
-  } else {
-    Serial.println(c);
-  }
+  Serial.println(inches);
+  Serial.println(inchesl);
+  Serial.println(inchesr);
   
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
@@ -63,13 +62,10 @@ void loop() {
  else if(inchesl < 6 && inches > 6 && inchesr > 6){  
   motorFront(100); 
   }//Front2
- else if(inchesl > 6 && inches > 6 && inchesr < 6){  
-  motorFront(100); 
-  }//Front3
  else if(inchesl < 4 && inches < 6 && inchesr < 4){  
   com = c-180; 
   motorTurnback(100); 
-  }//Turnback4
+  }//Turnback
  else { 
   motorFront(100);  
   }//other 
@@ -78,7 +74,7 @@ void loop() {
 void _compass() {
   
   c = compass.read();
- 
+  Serial.println(c);
   //delay(500);
 }
 
@@ -88,22 +84,22 @@ void motorFront(int speed){
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
-    // Motor B
+    // Motor B Right
     analogWrite(enableB, speed + 20); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
     
-    delay(50);
+    //delay(50);
 }
 
 void motorTurnback(int speed){
 
   while(c!=com){
-    // Motor A 
+     // Motor A left
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
-    // Motor B
+    // Motor B Right
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
