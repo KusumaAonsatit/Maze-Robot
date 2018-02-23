@@ -45,36 +45,43 @@ void loop() {
 
 
 //Ping the sensor and determine the distance in inches
-  inches = sonar.ping_in();
-  inchesl = sonarl.ping_in();
-  inchesr = sonarr.ping_in();
+  inches = sonar.ping_in();  // front
+  inchesl = sonarl.ping_in(); // left
+  inchesr = sonarr.ping_in(); // Right
   
   _compass();
-
-  Serial.println(inches);
-  Serial.println(inchesl);
+  Serial.print("        Left = ");
+  Serial.print(inchesl);
+  Serial.print("    Front = ");
+  Serial.print(inches);
+  Serial.print("    Right = ");
   Serial.println(inchesr);
   
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
- if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
+ 
+ if(inchesl < 5 && inches > 6 && inchesr < 5 ){ //Front1
+      motorFront(100);  
+  }
+  
+ else if(inchesl < 6 && inches > 6 && inchesr > 6){  //Front2
+      motorFront(100); 
+  }
+  
+ else if((inchesl < 4) && (inches < 6) && (inchesr < 4)){  //Turnback
+     com = c-180; 
+     motorTurnback(100); 
+  }
+  
+ else { //other 
   motorFront(100);  
-  }//Front1
- else if(inchesl < 6 && inches > 6 && inchesr > 6){  
-  motorFront(100); 
-  }//Front2
- else if(inchesl < 4 && inches < 6 && inchesr < 4){  
-  com = c-180; 
-  motorTurnback(100); 
-  }//Turnback
- else { 
-  motorFront(100);  
-  }//other 
+  }
 }
 
 void _compass() {
   
   c = compass.read();
-  Serial.println(c);
+  Serial.print("compass = ");
+  Serial.print(c);
   //delay(500);
 }
 
@@ -104,6 +111,8 @@ void motorTurnback(int speed){
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
   }
+  motorFront(100);
+  delay(1000);
 
 }
 
