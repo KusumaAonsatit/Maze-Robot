@@ -58,20 +58,20 @@ void loop() {
   
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
  if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
-  motorFront(200);  
+  motorFront(100);  
   }//Front1
  else if(inchesl < 6 && inches > 6 && inchesr > 6){  
-  motorFront(255); 
+  motorFront(100); 
   }//Front2
  else if(inchesl > 6 && inches > 6 && inchesr < 6){  
-  motorFront(255); 
+  motorFront(100); 
   }//Front3
  else if(inchesl < 4 && inches < 6 && inchesr < 4){  
   com = c-180; 
-  motorTurnback(200); 
+  motorTurnback(100); 
   }//Turnback4
  else { 
-  motorFront(255);  
+  motorFront(100);  
   }//other 
 }
 
@@ -89,7 +89,7 @@ void motorFront(int speed){
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
     // Motor B
-    analogWrite(enableB, speed); 
+    analogWrite(enableB, speed + 20); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
     
