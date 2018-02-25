@@ -12,6 +12,12 @@ void motorTurnback(int speed);
 void motorTurnright(int speed);
 void motorTurnleft(int speed);
 
+// calibreat //
+//float v0 = 0;
+float v90 = 82;
+float v180 = 180;
+float v270 = 278;
+/////////////////////////////////
 
 int enableA = 6;
 int pinA1 = 2;
@@ -45,47 +51,6 @@ void setup() {
 
 void loop() {
    _compass();
-   ch = Serial.read();
-   if(ch == 'F'){
-      motorFront(100);
-      delay(1000);
-   }
-   if(ch == 'L'){
-      //while(c!=com){
-          motorLeft(80);
-           delay(1000);
-      //}
-   }
-   if(ch == 'l'){
-      motorLeft_Smoot(70);
-       delay(1000);
-   }
-   if(ch =='R'){
-      motorRight(80);
-       delay(1000);
-   }
-   if(ch == 'r'){
-      motorRight_Smoot(70);
-       delay(1000);
-   }
-   if(ch == 'S'){
-      motorSTOP();
-   }
-   if(ch == 'B'){
-       if(c<165){
-           com = 165 - c;
-           com = 360 - com;
-       }
-       else
-          com = c - 165;
-       //com = c - 180.00;
-       motorTurnBack(80);
-   }
-
-
-
-   
-//Ping the sensor and determine the distance in inches
   inches = sonar.ping_in();  // front
   inchesl = sonarl.ping_in(); // left
   inchesr = sonarr.ping_in(); // Right
@@ -97,6 +62,69 @@ void loop() {
   Serial.print(inches);
   Serial.print("    Right = ");
   Serial.println(inchesr);
+
+
+
+ 
+  
+   
+   ch = Serial.read();
+   if(ch == 'F'){
+      motorFront(70);
+      delay(1000);
+   }
+   if(ch == 'L'){
+      //while(c!=com){
+          motorLeft(80);
+           delay(1000);
+           ch = 'S';
+      //}
+   }
+   if(ch == 'l'){
+      motorLeft_Smoot(70);
+       delay(1000);
+   }
+   if(ch =='R'){
+      motorRight(80);
+       delay(1000);
+       ch = 'S';
+   }
+   if(ch == 'r'){
+      motorRight_Smoot(70);
+       delay(1000);
+   }
+   if(ch == 'S'){
+      motorSTOP();
+   }
+   if(ch == 'G'){
+      motorBack(70);
+   }
+   if(ch == 'B'){
+       if(c<77){
+           com = 77 - c;
+           com = 360 - com;
+       }
+       else
+          com = c - 77;
+       //com = c - 180.00;
+       motorTurnBack(80);
+   }
+   if(ch == 'b'){
+       if(c<180){
+           com = 180 - c;
+           com = 360 - com;
+       }
+       else
+          com = c - 180;
+       //com = c - 180.00;
+       motorTurnBack(61');
+   }
+
+    
+
+   
+//Ping the sensor and determine the distance in inches
+  
   /*
 //If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
  
@@ -123,6 +151,7 @@ void loop() {
 void _compass() {
   
   c = compass.read();
+  
   Serial.print("compass = ");
   Serial.print(c);
   //delay(500);
@@ -139,7 +168,7 @@ void motorTurnBack(int speed){
       Serial.print(c);
       Serial.print("  COM = ");
       Serial.println(com);
-      motorLeft(speed);
+      motorRight(speed);
       
       if(c > (com-2.5) && c < (com+2.5)){
           break;
@@ -155,7 +184,17 @@ void motorTurnBack(int speed){
 
 
 ////////////////////Standard Function///////////////////////
-
+void motorBack(int speed){
+      // Motor A left
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, HIGH);
+    digitalWrite(pinA2, LOW);
+    // Motor B Right
+    analogWrite(enableB, speed + 20); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+    
+}
 void motorFront(int speed){
 
     // Motor A left
@@ -163,7 +202,7 @@ void motorFront(int speed){
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
     // Motor B Right
-    analogWrite(enableB, speed + 20); 
+    analogWrite(enableB, speed + 15); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
     
@@ -177,7 +216,7 @@ void motorLeft_Smoot(int speed){
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
     // Motor B Right
-    analogWrite(enableB, speed + 20 + 15); 
+    analogWrite(enableB, speed + 20 + 10); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
 }
@@ -186,7 +225,7 @@ void motorLeft(int speed){
     digitalWrite(pinA1, HIGH);
     digitalWrite(pinA2, LOW);
     // Motor B Right
-    analogWrite(enableB, speed + 20); 
+    analogWrite(enableB, speed + 22); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
 }
@@ -195,7 +234,7 @@ void motorLeft(int speed){
 
 void motorRight_Smoot(int speed){
     // Motor A left
-    analogWrite(enableA, speed + 20);
+    analogWrite(enableA, speed + 10);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
     // Motor B Right
@@ -224,6 +263,25 @@ void motorSTOP(){
     digitalWrite(pinB2, LOW);
 }
 ////////////////END  Standard  Function ///////////////////////
+ float CLB(float c){
+      float ans=0;
+      if( c >= 0 && c <= v90)
+          ans = (c * 90)/(v90 - 0);
+          
+      else if( c >= v90 && c <= v180)
+          ans = 90 + (c * 90)/(v180 - v90);
+          
+      else if( c >= v180 && c <= v270)
+          ans = 180 + (c * 90)/(v270 - v180);
+          
+      else if( c >= v270 && c <= 360 )
+          ans = 270 + (c * 90)/(360 - v270);
 
+
+      return ans;
+     
+
+     
+}
 
 
