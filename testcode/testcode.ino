@@ -68,21 +68,21 @@ void loop() {
 //  motorTurnback(100); 
 //  }//4
  else if(inchesl > 6 && inches < 6 && inchesr < 4){ 
-   if((c > 270) && (c < 360)){
-    com = (c + 30) - 360;
+   if((c >= 90) && (c <= 270)){
+    com = c - 90;
+   }
+   else if((c > 270) && (c < 360)){
+    com = (c + 90) - 360;
    }
    else if ((c > 0) && (c > 90)){
     com = 90 - c;
     com = 360 - c;
    }
-   else{
-    com = c - 90;
-   }
+   
   motorTurnleft(75); 
   }//5
 // else if(inchesl < 4 && inches < 6 && inchesr > 6){ 
 //   if((c > 270) && (c < 360)){
- 
 //  motorTurnright(100);
 //  }//6
  else { 
@@ -139,7 +139,6 @@ void motorTurnback(int speed){
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
   }
-
 }
 void motorTurnleft(int speed){
     // Motor A 
@@ -153,7 +152,7 @@ void motorTurnleft(int speed){
     
   while(1){
     _compass();
-    if(c >= com){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+    if(c <= com){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
      break;
     }
 
