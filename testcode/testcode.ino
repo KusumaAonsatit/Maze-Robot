@@ -22,6 +22,10 @@ int enableB = 4;
 int pinB1 = 5;
 int pinB2 = 7;
 
+float c_l = 37.00 ;
+float c_f = 100.00;
+float c_r = 189.00;
+float c_b = 100.00;
 float c;
 float com;
 
@@ -63,22 +67,17 @@ void loop() {
 // else if(inchesl > 6 && inches > 6 && inchesr < 4){  
 //  motorFront(100); 
 //  }//3
-// else if(inchesl < 4 && inches < 6 && inchesr < 4){  
-//  com = c-180; 
-//  motorTurnback(100); 
-//  }//4
- else if(inchesl > 6 && inches < 6 && inchesr < 4){ 
-   if((c >= 90) && (c <= 270)){
-    com = c - 90;
-   }
-   else if((c > 270) && (c < 360)){
-    com = (c + 90) - 360;
-   }
-   else if ((c > 0) && (c > 90)){
-    com = 90 - c;
-    com = 360 - c;
-   }
+ else if(inchesl < 4 && inches < 6 && inchesr < 4){  
+  
+  if((c-c_b)<=0){
+    motorTurnback_right(75);
+  }
+  else{
+    motorTurnback_left(75);
+  }
    
+  }//4
+   else if(inchesl > 6 && inches < 6 && inchesr < 4){ 
   motorTurnleft(75); 
   }//5
 // else if(inchesl < 4 && inches < 6 && inchesr > 6){ 
@@ -88,25 +87,12 @@ void loop() {
  else { 
   motorFront(100);  
   }//other 
-
 }
 
 void _compass() {
- // float c = -999;
   c = compass.read();
- // delay(500);
 }
-//void prin(){
-//  Serial.print("Left : ");
-//  Serial.print(inchesl);
-//  Serial.print("   Front : ");
-//  Serial.print(inches);
-//  Serial.print("   Right : ");
-//  Serial.println(inchesr);
-//  Serial.print("   compass : ");
-//  Serial.println(c);
-//  delay(100);
-//}
+
 void motorFront(int speed){
   
   // Motor A left
@@ -127,9 +113,8 @@ void motorFront(int speed){
   
     //delay(300);
 }
-void motorTurnback(int speed){
+void motorTurnback_left(int speed){
 
-  while(c!=com){
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -138,6 +123,38 @@ void motorTurnback(int speed){
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
+
+   while(1){
+    _compass();
+    if(c <= c_b){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(c_b);
+  }
+}
+void motorTurnback_right(int speed){
+
+    // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+
+   while(1){
+    _compass();
+    if(c >= c_b){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(c_b);
   }
 }
 void motorTurnleft(int speed){
@@ -152,10 +169,9 @@ void motorTurnleft(int speed){
     
   while(1){
     _compass();
-    if(c <= com){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+    if(c <= c_l){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
      break;
     }
-
     Serial.print("heading: ");
     Serial.print(c);
     Serial.print(" target: ");
@@ -178,26 +194,4 @@ void motorTurnright(int speed){
   }
 
 }
-/*********************************************************************************
- if((c > 270) && (c < 360)){
-  com = (c + 30) - 360;
- }
- else if ((c > 0) && (c > 90)){
-  com = 90 - x;
-  x = 360 - x;
- }
- else{
-  com = c - 90;
- }
-/*********************************************************************************
-  if((c > 270) && (c < 360)){
-  com = (c + 30) - 360;
- }
- else if ((c > 0) && (c > 90)){
-  com = 90 - x;
-  x = 360 - x;
- }
- else{
-  com = c + 90;
- }
- */
+
