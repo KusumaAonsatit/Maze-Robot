@@ -23,10 +23,10 @@ int enableB = 7;
 int pinB1 = 4;
 int pinB2 = 5;
 
-float c_l = 38.82 ;
-float c_f = 105.95;
-float c_r = 192.95;
-float c_b = 315.97;
+float c_l = 320.76 ;
+float c_f = 33.98;
+float c_r = 101.63;
+float c_b = 199.89;
 float com_f = c_f;
 float c;
 float com;
@@ -78,30 +78,81 @@ void loop() {
   Serial.println("///////////////////////////////// Go FRONT //////////////////////////////////////////"); 
   motorFront(100);  
   }//1
-// else if(inchesl < 4 && inches > 6 && inchesr > 6){  
-//  motorFront(100); 
-//  }//2
-// else if(inchesl > 6 && inches > 6 && inchesr < 4){  
-//  motorFront(100); 
-//  }//3
+ else if(inchesl < 4 && inches > 6 && inchesr > 6){  
+  Serial.println("///////////////////////////////// Go FRONT RIGHT MORE //////////////////////////////////////////"); 
+  motorFront(100); 
+  }//2
+ else if(inchesl > 6 && inches > 6 && inchesr < 4){  
+  Serial.println("///////////////////////////////// TURN LEFT3 //////////////////////////////////////////"); 
+     Serial.println(com_f);
+     Serial.println(c);
+     if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+//      else if((com_f <= (c_r+2))||(com_f >=(c_r-2)) ){
+        else if(com_f >= c_r ){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+        else if(90 < c < 105){
+          com_f=c_f;
+          motorTurnleft_right(75);
+      }
+      } 
+  }//3
  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
      Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////"); 
+     
      if(com_f == c_f){
         if((com_f-c_b)<=0){
           com_f=c_b;
           motorTurnback_right(75);
         }
-        else{
+        else if((com_f-c_b)>=0){
           com_f=c_b;
           motorTurnback_left(75);
         }
       }
+      
       else if(com_f == c_l){
         if((com_f-c_r)<=0){
           com_f=c_r;
           motorTurnback_right(75);
         }
-        else{
+        else if((com_f-c_r)>=0){
           com_f=c_r;
           motorTurnback_left(75);
         }
@@ -111,7 +162,7 @@ void loop() {
           com_f=c_f;
           motorTurnback_right(75);
         }
-        else{
+         else if((com_f-c_f)>=0){
           com_f=c_f;
           motorTurnback_left(75);
         }
@@ -121,20 +172,213 @@ void loop() {
           com_f=c_l;
           motorTurnback_right(75);
         }
-        else{
+        else if((com_f-c_l)<=0){
           com_f=c_l;
           motorTurnback_left(75);
         }
       }
    
   }//4
-//   else if(inchesl > 6 && inches < 6 && inchesr < 4){ 
-//  motorTurnleft(75); 
-//  }//5
-// else if(inchesl < 4 && inches < 6 && inchesr > 6){ 
-//   if((c > 270) && (c < 360)){
-//  motorTurnright(100);
-//  }//6
+   else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
+
+     Serial.println("///////////////////////////////// TURN LEFT5 //////////////////////////////////////////"); 
+     Serial.println(com_f);
+     Serial.println(c);
+     if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(90 < c < 110){
+          com_f=c_f;
+          motorTurnleft_right(75);
+      }
+
+      
+  }//5
+  
+ else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
+     Serial.println("///////////////////////////////// TURN RIGHT //////////////////////////////////////////"); 
+     
+     if(com_f == c_f){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnright_right(75);
+        }
+        else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnright_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+         motorTurnright_right(75);
+        }
+        else if((com_f-c_f)>=0){
+          com_f=c_f;
+          motorTurnright_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnright_right(75);
+        }
+         else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnright_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+          motorTurnright_right(75);
+        }
+        else if((com_f-c_b)<=0){
+          com_f=c_b;
+          motorTurnright_left(75);
+        }
+      }
+  }//6
+     else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
+
+     Serial.println("///////////////////////////////// TURN LEFT7 //////////////////////////////////////////"); 
+     
+     if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+      }
+
+      
+  }//7
+
+       else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
+
+     Serial.println("///////////////////////////////// TURN LEFT8 //////////////////////////////////////////"); 
+     
+     if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+      }
+       else if(90 < c < 105){
+          com_f=c_f;
+          motorTurnleft_right(75);
+      }
+
+      
+  }//8
  else { 
        Serial.println("////////////////////   Else  //////////////////////");
          motorFront(100);  
@@ -147,6 +391,9 @@ void _compass() {
 
 
 void motorFront(int speed){
+
+  
+Serial.println("///////////////////////////////// FRONT FRONT  //////////////////////////////////////////"); 
   
   // Motor A left
   
@@ -167,30 +414,6 @@ void motorFront(int speed){
     //delay(300);
 }
 
-
-//void motorFront(int speed){
-//  
-//  // Motor A left
-//  
-//          analogWrite(enableA, speed-10);
-//
-//          digitalWrite(pinA1, HIGH);
-//
-//          digitalWrite(pinA2, LOW);
-//
-// // Motor B
-//
-//    analogWrite(enableB, speed+20); 
-//
-//    digitalWrite(pinB1, HIGH);
-//
-//    digitalWrite(pinB2, LOW);
-//  
-//    //delay(300);
-//
-////    _sonar();
-//    
-//}
 void motorTurnback_left(int speed){
 
 
@@ -255,7 +478,8 @@ void motorTurnback_right(int speed){
 //    Serial.println(inchesr);
   }
 }
-void motorTurnleft(int speed){
+void motorTurnleft_left(int speed){
+   Serial.println("///////////////////////////////// TURN LEFT LEFT//////////////////////////////////////////"); 
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -267,20 +491,55 @@ void motorTurnleft(int speed){
     
   while(1){
     _compass();
-    if(c <= c_l){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+//    Serial.print("heading: ");
+//    Serial.print(c);
+//    Serial.print(" target: ");
+//    Serial.println(com_f);
+        Serial.print("left  ");
+    Serial.print(inchesl);
+    Serial.print("  mid  ");
+    Serial.print(inches);
+    Serial.print("  right  ");
+    Serial.println(inchesr);
+  }
+  motorFront(100);
+}
+
+void motorTurnleft_right(int speed){
+   Serial.println("///////////////////////////////// TURN LEFT RIGHT//////////////////////////////////////////"); 
+    // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+    
+  while(1){
+    _compass();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
      break;
     }
     Serial.print("heading: ");
     Serial.print(c);
     Serial.print(" target: ");
-    Serial.println(com);
+    Serial.println(com_f);
+            Serial.print("left  ");
+    Serial.print(inchesl);
+    Serial.print("  mid  ");
+    Serial.print(inches);
+    Serial.print("  right  ");
+    Serial.println(inchesr);
   }
   motorFront(100);
 }
+void motorTurnright_left(int speed){
+Serial.println("///////////////////////////////// TURN RIGHT LEFT//////////////////////////////////////////");
 
-void motorTurnright(int speed){
-
-  while(c!=com){
     // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -289,7 +548,44 @@ void motorTurnright(int speed){
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, HIGH);
     digitalWrite(pinB2, LOW); 
+
+while(1){
+    _compass();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
   }
+  motorFront(100);
+
+}
+
+void motorTurnright_right(int speed){
+Serial.println("///////////////////////////////// TURN RIGHT RIGHT//////////////////////////////////////////");
+
+  // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+
+while(1){
+    _compass();
+    if(c >= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
+  }
+  motorFront(100);
 
 }
 
