@@ -14,7 +14,6 @@ void motorTurnright(int speed);
 void motorTurnleft(int speed);
 //void _sonar();
 
-
 int enableA = 6;
 int pinA1 = 2;
 int pinA2 = 3;
@@ -50,7 +49,6 @@ void setup() {
 }
 
 void loop() {
-
 
 //Ping the sensor and determine the distance in inches
   int sumL=0,sumM=0,sumR=0;
@@ -220,7 +218,9 @@ void loop() {
           com_f=c_f;
           motorTurnleft_right(75);
         }
-        else if((com_f-c_f)<=0){
+        else if
+        ((com_f-c_f)<=0){
+        
           com_f=c_f;
           motorTurnleft_left(75);
         }
@@ -229,7 +229,6 @@ void loop() {
           com_f=c_f;
           motorTurnleft_right(75);
       }
-
       
   }//5
   
@@ -381,6 +380,8 @@ void loop() {
 //  }//8
  else { 
        Serial.println("////////////////////   Else  //////////////////////");
+       Serial.println(com_f);
+     Serial.println(c);
          motorFront(100);  
   }//other 
 }
@@ -389,10 +390,8 @@ void _compass() {
   c = compass.read();
 }
 
-
 void motorFront(int speed){
 
-  
 Serial.println("///////////////////////////////// FRONT FRONT  //////////////////////////////////////////"); 
   
   // Motor A left

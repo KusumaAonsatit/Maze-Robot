@@ -7,7 +7,6 @@
     int dir1PinB = 4;
     int dir2PinB = 5;
     int speedPinB = 7; // เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์
-
     
 //Counter speed sensor-----------------------------------------------------------------------//
     const byte interruptPinL = 18;
@@ -103,8 +102,8 @@ void loop() {
 
 int set_power(int speed_left,int speed_right){
   
-  speed_left = max(min(speed_left, 255), 0);
-  speed_right = max(min(speed_right, 255), 0);
+  speed_left = max(min(speed_left, 100), 0);
+  speed_right = max(min(speed_right, 100), 0);
   
   // Motor A ด้านซ้าย
   analogWrite(speedPinA, speed_left); //ตั้งค่าความเร็ว PWM ผ่านตัวแปร ค่าต่ำลง มอเตอร์จะหมุนช้าลง
