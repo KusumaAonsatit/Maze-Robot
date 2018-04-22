@@ -2,12 +2,10 @@
     int dir1PinA = 2;
     int dir2PinA = 3;
     int speedPinA = 6; //   เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์ 
-
 // Motor B Right
     int dir1PinB = 4;
     int dir2PinB = 5;
     int speedPinB = 7; // เพื่อให้ PWM สามารถควบคุมความเร็วมอเตอร์
-    
 //Counter speed sensor-----------------------------------------------------------------------//
     const byte interruptPinL = 18;
     const byte interruptPinR = 19;
@@ -76,17 +74,15 @@ void ISR_L(){
 }
 void ISR_R(){
     Right++; 
-}    
+}
 void loop() {
   // TODO: critical section
   long error = Left - Right;
   long minCount = min(Left, Right);
   Left -= minCount;
   Right -= minCount;
-  
   // Add new sample to PID
   pid.addNewSample(error);
-  
   // PID feedback
   int powerDiff = int(pid.process());
   Serial.print("Error: ");
@@ -99,12 +95,9 @@ void loop() {
   else
     set_power(normalSpeed, normalSpeed - powerDiff);
 }
-
 int set_power(int speed_left,int speed_right){
-  
   speed_left = max(min(speed_left, 100), 0);
   speed_right = max(min(speed_right, 100), 0);
-  
   // Motor A ด้านซ้าย
   analogWrite(speedPinA, speed_left); //ตั้งค่าความเร็ว PWM ผ่านตัวแปร ค่าต่ำลง มอเตอร์จะหมุนช้าลง
   digitalWrite(dir1PinA, LOW);
