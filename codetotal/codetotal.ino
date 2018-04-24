@@ -12,15 +12,24 @@ void motorFront1(int speed);
 void motorTurnback(int speed);
 void motorTurnright(int speed);
 void motorTurnleft(int speed);
-
+//void _sonar();
 
 int enableA = 6;
 int pinA1 = 2;
 int pinA2 = 3;
 
-int enableB = 4;
-int pinB1 = 5;
-int pinB2 = 7;
+int enableB = 7;
+int pinB1 = 4;
+int pinB2 = 5;
+
+float c_l = 320.76 ;
+float c_f = 33.98;
+float c_r = 101.63;
+float c_b = 199.89;
+float com_f = c_f;
+float c;
+float com;
+
 
 long inches,inchesl,inchesr;
 
@@ -41,100 +50,255 @@ void setup() {
 
 void loop() {
 
-
 //Ping the sensor and determine the distance in inches
-  inches = sonar.ping_in();
-  inchesl = sonarl.ping_in();
-  inchesr = sonarr.ping_in();
-
-//If the robot detects an obstacle less than four inches away, it will back up, then turn left; if no obstacle is detected, it will go forward
- if(inchesl < 5 && inches > 6 && inchesr < 5 ){ 
-  motorFront(200);  
-  }//1
- else if(inchesl < 6 && inches > 6 && inchesr > 6){  
-  motorFront(255); 
-  }//2
- else if(inchesl > 6 && inches > 6 && inchesr < 6){  
-  motorFront(255); 
-  }//3
- else if(inchesl < 4 && inches < 6 && inchesr < 4){  
-  com = c-180; 
-  motorTurnback(200); 
-  }//4
- else if(inchesl > 6 && inches < 10 && inchesr < 6){ 
-  com = c-90; 
-  motorTurnleft(240); 
-  }//5
- else if(inchesl < 6 && inches < 8 && inchesr > 6){ 
-  com = c-90;  
-  motorTurnright(240);
-  }//6
- else { 
-  motorFront(255);  
-  }//other 
+  int sumL=0,sumM=0,sumR=0;
+  for(int i=0;i<20;i++){
+     sumM += sonar.ping_in();
+     sumL += sonarl.ping_in();
+     sumR += sonarr.ping_in();
+  }
+  inches = sumM/20;
+  inchesl = sumL/20;
+  inchesr = sumR/20;
+  
+  Serial.print("left  ");
+  Serial.print(inchesl);
+  Serial.print("  mid  ");
+  Serial.print(inches);
+  Serial.print("  right  ");
+  Serial.println(inchesr);
+  
+ //prin();
+ _compass();
+// _sonar();
+  
+  if((inchesl < 4) && (inches > 6 )&& (inchesr < 4) ){
+    Serial.println("///////////////////////////////// Go FRONT ///////////////////////////////////////////");
+    motorFront(100); 
+  }
+  else if(inchesl < 4 && inches > 6 && inchesr > 6){  
+    Serial.println("///////////////////////////// Go FRONT RIGHT MORE ////////////////////////////////////");
+    motorFront(100); 
+  }
+  else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
+    Serial.println("/////////////////////////////// TURN LEFT LEFT MORE //////////////////////////////////"); 
+    motorTurnleft_left(100);
+  }
+  else if(inchesl > 6 && inches > 6 && inchesr < 4){  
+    Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
+  }
+  else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
+    Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
+  }
+  else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
+    Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
+  }
+  else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
+    Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
+  }
+  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
+    Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
+  }
+  else { 
+    Serial.println("//////////////////////////////////// Else ////////////////////////////////////////////");
+  }
 }
-
+//Function Compass
 void _compass() {
-  float c = -999;
   c = compass.read();
-  delay(500);
 }
 
 void motorFront(int speed){
+
+    Serial.println("----------------------------------- FRONT FRONT -------------------------------------"); 
   
-    // Motor A left
+  // Motor A left
+  
+          analogWrite(enableA, speed-10);
+          digitalWrite(pinA1, LOW);
+          digitalWrite(pinA2, HIGH);
+
+ // Motor B
+
+    analogWrite(enableB, speed+20); 
+    digitalWrite(pinB1,LOW);
+    digitalWrite(pinB2,HIGH);
+  
+    //delay(300);
+}
+
+void motorTurnleft_left(int speed){
+   Serial.println("----------------------------------- TURN LEFT LEFT -----------------------------------"); 
+    // Motor A 
     analogWrite(enableA, speed);
-    digitalWrite(pinA1, LOW);
-    digitalWrite(pinA2, HIGH);
+    digitalWrite(pinA1, HIGH);
+    digitalWrite(pinA2, LOW);
     // Motor B
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
     
-    delay(50);
+  while(1){
+    _compass();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+//    Serial.print("heading: ");
+//    Serial.print(c);
+//    Serial.print(" target: ");
+//    Serial.println(com_f);
+        Serial.print("left  ");
+    Serial.print(inchesl);
+    Serial.print("  mid  ");
+    Serial.print(inches);
+    Serial.print("  right  ");
+    Serial.println(inchesr);
+  }
+  motorFront(100);
 }
 
-void motorTurnback(int speed){
-
-  while(c!=com){
+void motorTurnleft_right(int speed){
+   Serial.println("----------------------------------- TURN LEFT RIGHT -----------------------------------"); 
     // Motor A 
     analogWrite(enableA, speed);
-    digitalWrite(pinA1, HIGH);
-    digitalWrite(pinA2, LOW);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
     // Motor B
     analogWrite(enableB, speed); 
-    digitalWrite(pinB1, LOW);
-    digitalWrite(pinB2, HIGH);
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+    
+  while(1){
+    _compass();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
+            Serial.print("left  ");
+    Serial.print(inchesl);
+    Serial.print("  mid  ");
+    Serial.print(inches);
+    Serial.print("  right  ");
+    Serial.println(inchesr);
   }
-
+  motorFront(100);
 }
-void motorTurnleft(int speed){
+void motorTurnright_left(int speed){
+Serial.println("----------------------------------- TURN RIGHT LEFT -----------------------------------");
 
-  while(c!=com){
-    // Motor A 
-    analogWrite(enableA, 0);
-    digitalWrite(pinA1, HIGH);
-    digitalWrite(pinA2, LOW);
-    // Motor B
-    analogWrite(enableB, speed); 
-    digitalWrite(pinB1, LOW);
-    digitalWrite(pinB2, HIGH);
-  }
-
-}
-
-void motorTurnright(int speed){
-
-  while(c!=com){
     // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2,HIGH );
     // Motor B          
-    analogWrite(enableB, 0); 
+    analogWrite(enableB, speed); 
     digitalWrite(pinB1, HIGH);
     digitalWrite(pinB2, LOW); 
+
+while(1){
+    _compass();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
   }
+  motorFront(100);
 
 }
+
+void motorTurnright_right(int speed){
+Serial.println("----------------------------------- TURN RIGHT RIGHT -----------------------------------");
+
+  // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+
+while(1){
+    _compass();
+    if(c >= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
+  }
+  motorFront(100);
+
+}
+void motorTurnback_left(int speed){
+
+Serial.println("----------------------------------- TURN BACK LEFT -----------------------------------"); 
+    // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, HIGH);
+    digitalWrite(pinA2, LOW);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, LOW);
+    digitalWrite(pinB2, HIGH);
+
+   while(1){
+    _compass();
+//    _sonar();
+    if(c <= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
+
+//    Serial.print("left  ");
+//    Serial.print(inchesl);
+//    Serial.print("  mid  ");
+//    Serial.print(inches);
+//    Serial.print("  right  ");
+//    Serial.println(inchesr);
+      }
+}
+void motorTurnback_right(int speed){
+
+  Serial.println("----------------------------------- TURN BACK RIGHT -----------------------------------"); 
+
+    // Motor A 
+    analogWrite(enableA, speed);
+    digitalWrite(pinA1, LOW);
+    digitalWrite(pinA2, HIGH);
+    // Motor B
+    analogWrite(enableB, speed); 
+    digitalWrite(pinB1, HIGH);
+    digitalWrite(pinB2, LOW);
+
+   while(1){
+//    _sonar();
+    _compass();
+    if(c >= com_f){//เอาแค่ค่าน้อยกว่าหรือมากกว่าอันเดียวพอ 
+     break;
+    }
+    Serial.print("heading: ");
+    Serial.print(c);
+    Serial.print(" target: ");
+    Serial.println(com_f);
+
+//    Serial.print("left  ");
+//    Serial.print(inchesl);
+//    Serial.print("  mid  ");
+//    Serial.print(inches);
+//    Serial.print("  right  ");
+//    Serial.println(inchesr);
+  }
+}
+
 
