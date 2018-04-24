@@ -50,16 +50,16 @@ void setup() {
 
 void loop() {
 
-//Ping the sensor and determine the distance in inches
-  int sumL=0,sumM=0,sumR=0;
-  for(int i=0;i<20;i++){
-     sumM += sonar.ping_in();
-     sumL += sonarl.ping_in();
-     sumR += sonarr.ping_in();
-  }
-  inches = sumM/20;
-  inchesl = sumL/20;
-  inchesr = sumR/20;
+////Ping the sensor and determine the distance in inches
+//  int sumL=0,sumM=0,sumR=0;
+//  for(int i=0;i<20;i++){
+//     sumM += sonar.ping_in();
+//     sumL += sonarl.ping_in();
+//     sumR += sonarr.ping_in();
+//  }
+//  inches = sumM/20;
+//  inchesl = sumL/20;
+//  inchesr = sumR/20;
   
   Serial.print("left  ");
   Serial.print(inchesl);
@@ -82,23 +82,69 @@ void loop() {
   }
   else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
     Serial.println("/////////////////////////////// TURN LEFT LEFT MORE //////////////////////////////////"); 
-    motorTurnleft_left(100);
+     if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
+      
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if
+        ((com_f-c_f)<=0){
+        
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(90 < c < 110){
+          com_f=c_f;
+          motorTurnleft_right(75);
+      }
   }
-  else if(inchesl > 6 && inches > 6 && inchesr < 4){  
-    Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
-  }
-  else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
-    Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
-  }
-  else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
-    Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
-  }
-  else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
-    Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
-  }
-  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
-    Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
-  }
+//  else if(inchesl > 6 && inches > 6 && inchesr < 4){  
+//    Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
+//  }
+//  else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
+//    Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
+//  }
+//  else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
+//    Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
+//  }
+//  else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
+//    Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
+//  }
+//  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
+//    Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
+//  }
   else { 
     Serial.println("//////////////////////////////////// Else ////////////////////////////////////////////");
   }
