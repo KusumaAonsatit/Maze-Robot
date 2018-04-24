@@ -85,56 +85,54 @@ void loop() {
      Serial.println("///////////////////////////////// TURN LEFT //////////////////////////////////////////"); 
      Serial.println(com_f);
      Serial.println(c);
+     
      if(com_f == c_f){
+        if((com_f-c_l)<=0){
+          com_f=c_l;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-c_l)>=0){
+          com_f=c_l;
+          motorTurnleft_left(75);
+        }
+      }
       
-     }
-//     if(com_f == c_f){
-//        if((com_f-c_l)<=0){
-//          com_f=c_l;
-//          motorTurnleft_right(75);
-//        }
-//        else if((com_f-c_l)>=0){
-//          com_f=c_l;
-//          motorTurnleft_left(75);
-//        }
-//      }
-//      
-//      else if(com_f == c_l){
-//        if((com_f-c_b)<=0){
-//          com_f=c_b;
-//         motorTurnleft_right(75);
-//        }
-//        else if((com_f-c_b)>=0){
-//          com_f=c_b;
-//          motorTurnleft_left(75);
-//        }
-//      }
-//      else if(com_f == c_b){
-//        if((com_f-c_r)<=0){
-//          com_f=c_r;
-//          motorTurnleft_right(75);
-//        }
-//         else if((com_f-c_r)>=0){
-//          com_f=c_r;
-//          motorTurnleft_left(75);
-//        }
-//      }
-//      else if(com_f == c_r){
-//        if((com_f-c_f)<=0){
-//          com_f=c_f;
-//          motorTurnleft_right(75);
-//        }
-//        else if
-//        ((com_f-c_f)<=0){
-//        
-//          com_f=c_f;
-//          motorTurnleft_left(75);
-//        }
-//      }
-//      else if(90 < c < 110){
-//          com_f=c_f;
-//          motorTurnleft_right(75);
-//      }
+      else if(com_f == c_l){
+        if((com_f-c_b)<=0){
+          com_f=c_b;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-c_b)>=0){
+          com_f=c_b;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_b){
+        if((com_f-c_r)<=0){
+          com_f=c_r;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-c_r)>=0){
+          com_f=c_r;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(com_f == c_r){
+        if((com_f-c_f)<=0){
+          com_f=c_f;
+          motorTurnleft_right(75);
+        }
+        else if
+        ((com_f-c_f)<=0){
+        
+          com_f=c_f;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(90 < c < 110){
+          com_f=c_f;
+          motorTurnleft_right(75);
+      }
       
   }
 // else if(inchesl > 6 && inches > 6 && inchesr < 4){  
@@ -382,7 +380,6 @@ void loop() {
 //      }
 //   
 //  }//4
-   
  else { 
        Serial.println("////////////////////   Else  //////////////////////");
        Serial.println(com_f);
