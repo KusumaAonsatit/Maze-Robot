@@ -81,10 +81,9 @@ void loop() {
   motorFront(100); 
   }
  else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
-
-     Serial.println("///////////////////////////////// TURN LEFT //////////////////////////////////////////"); 
-     Serial.println(com_f);
-     Serial.println(c);
+  Serial.println("///////////////////////////////// TURN LEFT //////////////////////////////////////////"); 
+  Serial.println(com_f);
+  Serial.println(c);
      
      if(com_f == c_f){
         if((com_f-c_l)<=0){
