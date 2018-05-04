@@ -1,27 +1,29 @@
 #include <NewPing.h>
 #include <HMC5983.h>
 #include <Wire.h>
-
-//Tell the Arduino where the sensor is hooked up
+//------------------SONAR-------------------------//
 NewPing sonar(11, 10); //trig,echo
 NewPing sonarl(9, 8);
 NewPing sonarr(13, 12);
-
+//------------------LED-------------------------//
+int ledPinl = 22;
+int ledPinf = 24;
+int ledPinr = 26;
+boolean bLedOn = true;
+//------------------MOTOR-------------------------//
 void motorFront(int speed);
 void motorFront1(int speed);
 void motorTurnback(int speed);
 void motorTurnright(int speed);
 void motorTurnleft(int speed);
-//void _sonar();
-
 int enableA = 6;
 int pinA1 = 2;
 int pinA2 = 3;
-
 int enableB = 7;
 int pinB1 = 4;
 int pinB2 = 5;
-
+//-----------------COMPASS-----------------------//
+HMC5983 compass;
 float cl = 320.76 ;
 float cf = 33.98;
 float cr = 101.63;
@@ -36,24 +38,23 @@ float most_cr = cr + 5;
 float most_cb = cb + 5;
 float com_f = cf;
 float c;
-//float com;
-
-
 long inches,inchesl,inchesr;
-
-HMC5983 compass;
 
 void setup() {
   Serial.begin(9600);
+//------------------MOTOR-------------------------//
   pinMode(enableA, OUTPUT);
   pinMode(pinA1, OUTPUT);
   pinMode(pinA2, OUTPUT);
-
   pinMode(enableB, OUTPUT);
   pinMode(pinB1, OUTPUT);
   pinMode(pinB2, OUTPUT);
 
   compass.begin(); // use "true" if you need some debug information
+
+  pinMode(ledPinl, OUTPUT);
+  pinMode(ledPinf, OUTPUT);
+  pinMode(ledPinr, OUTPUT);
 }
 
 void loop() {
@@ -148,6 +149,7 @@ void _compass() {
 
 void motorFront(int speed){
     Serial.println("----------------------------------- FRONT FRONT -------------------------------------"); 
+    digitalWrite(ledPinf, bLedOn);
   // Motor A left
     analogWrite(enableA, speed-10);
     digitalWrite(pinA1, LOW);
@@ -159,7 +161,8 @@ void motorFront(int speed){
 }
 
 void motorTurnleft_left(int speed){
-   Serial.println("----------------------------------- TURN LEFT LEFT -----------------------------------"); 
+    Serial.println("----------------------------------- TURN LEFT LEFT -----------------------------------"); 
+    digitalWrite(ledPinl, bLedOn); 
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -189,7 +192,8 @@ void motorTurnleft_left(int speed){
 }
 
 void motorTurnleft_right(int speed){
-   Serial.println("----------------------------------- TURN LEFT RIGHT -----------------------------------"); 
+    Serial.println("----------------------------------- TURN LEFT RIGHT -----------------------------------"); 
+    digitalWrite(ledPinl, bLedOn);
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -218,7 +222,8 @@ void motorTurnleft_right(int speed){
   motorFront(100);
 }
 void motorTurnright_left(int speed){
-Serial.println("----------------------------------- TURN RIGHT LEFT -----------------------------------");
+    Serial.println("----------------------------------- TURN RIGHT LEFT -----------------------------------");
+    digitalWrite(ledPinr, bLedOn);
     // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -248,8 +253,9 @@ while(1){
 }
 
 void motorTurnright_right(int speed){
-Serial.println("----------------------------------- TURN RIGHT RIGHT -----------------------------------");
-  // Motor A 
+    Serial.println("----------------------------------- TURN RIGHT RIGHT -----------------------------------");
+    digitalWrite(ledPinr, bLedOn);
+    // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
@@ -278,7 +284,11 @@ while(1){
 }
 void motorTurnback_left(int speed){
 
-Serial.println("----------------------------------- TURN BACK LEFT -----------------------------------"); 
+    Serial.println("----------------------------------- TURN BACK LEFT -----------------------------------"); 
+    digitalWrite(ledPinl, bLedOn);
+    digitalWrite(ledPinf, bLedOn);
+    digitalWrite(ledPinr, bLedOn);
+    
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -308,8 +318,11 @@ Serial.println("----------------------------------- TURN BACK LEFT -------------
 }
 void motorTurnback_right(int speed){
 
-  Serial.println("----------------------------------- TURN BACK RIGHT -----------------------------------"); 
-
+    Serial.println("----------------------------------- TURN BACK RIGHT -----------------------------------"); 
+    digitalWrite(ledPinl, bLedOn);
+    digitalWrite(ledPinf, bLedOn);
+    digitalWrite(ledPinr, bLedOn);
+    
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
