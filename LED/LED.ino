@@ -13,9 +13,9 @@ void setup() {
 }
 
 void loop() {
-  digitalWrite(ledPinl, bLedOn);
-  digitalWrite(ledPinf, bLedOn);
-  digitalWrite(ledPinr, bLedOn);
-  bLedOn = !bLedOn;
+  digitalWrite(ledPinl, HIGH);
+  digitalWrite(ledPinf, LOW);
+  digitalWrite(ledPinr, HIGH);
+ // bLedOn = !bLedOn;
   delay(1000);
 }

@@ -12,8 +12,6 @@ int inPin3 = 8;
 int ledPinl = 22;
 int ledPinf = 24;
 int ledPinr = 26;
-boolean bLedOn = true;
-boolean bLedOff = false;
 //------------------MOTOR-------------------------//
 void motorFront(int speed);
 void motorFront1(int speed);
@@ -39,7 +37,7 @@ void setup() {
   pinMode(pinB1, OUTPUT);
   pinMode(pinB2, OUTPUT);
 
-  compass.begin(); // use "true" if you need some debug information
+
 //------------------LED-------------------------//
   pinMode(ledPinl, OUTPUT);
   pinMode(ledPinf, OUTPUT);
@@ -86,35 +84,35 @@ inchesl= microsecondsToCentimeters(duration3);
   Serial.print("  right  ");
   Serial.println(inchesr);
   
-  if((inchesl < 4) && (inches > 6 )&& (inchesr < 4) ){
+  if((inchesl < 10) && (inches > 15 )&& (inchesr < 10) ){
     Serial.println("///////////////////////////////// Go FRONT ///////////////////////////////////////////");
     motorFront(100); 
   }
-  else if(inchesl < 4 && inches > 6 && inchesr > 6){  
+  else if(inchesl < 10 && inches > 15 && inchesr > 15){  
     Serial.println("///////////////////////////// Go FRONT RIGHT MORE ////////////////////////////////////");
     motorFront(100); 
   }
-  else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
+  else if((inchesl > 15) && (inches < 10) && (inchesr < 10)){ 
     Serial.println("/////////////////////////////// TURN LEFT LEFT MORE //////////////////////////////////"); 
     motorTurnleft(100);  
   }
-  else if(inchesl > 6 && inches > 6 && inchesr < 4){  
+  else if(inchesl > 15 && inches > 15 && inchesr < 10){  
     Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
     motorTurnleft(100); 
   }
-  else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
+  else if((inchesl > 15) && (inches < 10) && (inchesr > 15)){ 
     Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
     motorTurnleft(100); 
   }
-  else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
+  else if((inchesl > 15) && (inches > 15) && (inchesr > 15)){ 
     Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
     motorTurnleft(100); 
   }
-  else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
+  else if((inchesl < 10 )&& (inches < 10) && (inchesr > 15)){ 
     Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
     motorTurnright(100);
   }
-  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
+  else if((inchesl < 10) && (inches < 10) && (inchesr < 10)){  
     Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
     motorTurnback(100);
   }
@@ -129,10 +127,10 @@ long microsecondsToCentimeters(long microseconds){
 
 void motorFront(int speed){
     Serial.println("----------------------------------- FRONT FRONT -------------------------------------"); 
-    digitalWrite(ledPinl, bLedOff);
-    digitalWrite(ledPinf, bLedOn);
-    digitalWrite(ledPinr, bLedOff);
-    bLedOn = !bLedOn;
+    digitalWrite(ledPinl, LOW);
+    digitalWrite(ledPinf, HIGH);
+    digitalWrite(ledPinr, LOW);
+
     
   // Motor A left
     analogWrite(enableA, speed-10);
@@ -142,16 +140,14 @@ void motorFront(int speed){
     analogWrite(enableB, speed+20); 
     digitalWrite(pinB1,LOW);
     digitalWrite(pinB2,HIGH);
-    
-//    digitalWrite(ledPinf, bLedOff);
 }
 
 void motorTurnleft(int speed){
     Serial.println("----------------------------------- TURN LEFT -----------------------------------------"); 
-    digitalWrite(ledPinl, bLedOn);
-    digitalWrite(ledPinf, bLedOff);
-    digitalWrite(ledPinr, bLedOff);
-    bLedOn = !bLedOn;
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, LOW);
+    
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -160,17 +156,15 @@ void motorTurnleft(int speed){
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    
-//    digitalWrite(ledPinl, bLedOff);
 }
 
 
 void motorTurnright(int speed){
     Serial.println("----------------------------------- TURN RIGHT -----------------------------------------");
-    digitalWrite(ledPinl, bLedOff);
-    digitalWrite(ledPinf, bLedOff);
-    digitalWrite(ledPinr, bLedOn);
-    bLedOn = !bLedOn;
+    digitalWrite(ledPinl, LOW);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, HIGH);
+
     // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -179,17 +173,15 @@ void motorTurnright(int speed){
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, HIGH);
     digitalWrite(pinB2, LOW); 
-    
-//    digitalWrite(ledPinr, bLedOff);
 }
 
 void motorTurnback(int speed){
 
     Serial.println("----------------------------------- TURN BACK -----------------------------------------"); 
-    digitalWrite(ledPinl, bLedOn);
-    digitalWrite(ledPinf, bLedOn);
-    digitalWrite(ledPinr, bLedOn);
-    bLedOn = !bLedOn;
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, HIGH);
+    digitalWrite(ledPinr, HIGH);
+
     
     // Motor A 
     analogWrite(enableA, speed);
@@ -199,9 +191,5 @@ void motorTurnback(int speed){
     analogWrite(enableB, speed); 
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
-    
-//    digitalWrite(ledPinl, bLedOff);
-//    digitalWrite(ledPinf, bLedOff);
-//    digitalWrite(ledPinr, bLedOff);
 }
 
