@@ -2,14 +2,16 @@
 #include <HMC5983.h>
 #include <Wire.h>
 //------------------SONAR-------------------------//
-NewPing sonar(11, 10); //trig,echo
-NewPing sonarl(9, 8);
-NewPing sonarr(13, 12);
+const int pingPin1 = 13;
+int inPin1 = 12;
+const int pingPin2 = 11;
+int inPin2 = 10;
+const int pingPin3 = 9;
+int inPin3 = 8;
 //------------------LED-------------------------//
 int ledPinl = 22;
 int ledPinf = 24;
 int ledPinr = 26;
-boolean bLedOn = true;
 //------------------MOTOR-------------------------//
 void motorFront(int speed);
 void motorFront1(int speed);
@@ -25,7 +27,7 @@ int pinB2 = 5;
 //-----------------COMPASS-----------------------//
 HMC5983 compass;
 float cl = 320.76 ;
-float cf = 33.98;
+float cf = 317.91;
 float cr = 101.63;
 float cb = 199.89;
 float lest_cl = cl - 5;
@@ -49,7 +51,14 @@ void setup() {
   pinMode(enableB, OUTPUT);
   pinMode(pinB1, OUTPUT);
   pinMode(pinB2, OUTPUT);
-
+//------------------SONAR-------------------------//  
+  pinMode(pingPin1, OUTPUT);
+  pinMode(inPin1, INPUT);
+  pinMode(pingPin2, OUTPUT);
+  pinMode(inPin2, INPUT);
+  pinMode(pingPin3, OUTPUT);
+  pinMode(inPin3, INPUT);
+  
   compass.begin(); // use "true" if you need some debug information
 
   pinMode(ledPinl, OUTPUT);
@@ -59,6 +68,27 @@ void setup() {
 
 void loop() {
 
+long duration,duration2,duration3;
+
+digitalWrite(pingPin1, LOW);
+digitalWrite(pingPin1, HIGH);
+digitalWrite(pingPin1, LOW);
+duration = pulseIn(inPin1, HIGH);
+
+digitalWrite(pingPin2, LOW);
+digitalWrite(pingPin2, HIGH);
+digitalWrite(pingPin2, LOW);
+duration2 = pulseIn(inPin2, HIGH);
+
+digitalWrite(pingPin3, LOW);
+digitalWrite(pingPin3, HIGH);
+digitalWrite(pingPin3, LOW);
+duration3 = pulseIn(inPin3, HIGH);
+
+inchesr= microsecondsToCentimeters(duration);
+inches= microsecondsToCentimeters(duration2);
+inchesl= microsecondsToCentimeters(duration3);
+
  _compass();
   Serial.print("left  ");
   Serial.print(inchesl);
@@ -67,79 +97,46 @@ void loop() {
   Serial.print("  right  ");
   Serial.println(inchesr);
   
-  if((inchesl < 4) && (inches > 6 )&& (inchesr < 4) ){
+  if((inchesl < 10) && (inches > 15 )&& (inchesr < 10) ){
     Serial.println("///////////////////////////////// Go FRONT ///////////////////////////////////////////");
-    motorFront(100); 
+    motorFront(120); 
   }
-  else if(inchesl < 4 && inches > 6 && inchesr > 6){  
+  else if(inchesl < 10 && inches > 15 && inchesr > 15){  
     Serial.println("///////////////////////////// Go FRONT RIGHT MORE ////////////////////////////////////");
-    motorFront(100); 
+    motorFront(120); 
   }
-  else if((inchesl > 6) && (inches < 4) && (inchesr < 4)){ 
+  else if((inchesl > 15) && (inches < 10) && (inchesr < 10)){ 
     Serial.println("/////////////////////////////// TURN LEFT LEFT MORE //////////////////////////////////"); 
-     if(lest_cf <= com_f <= most_cf){
-        if((com_f-cl)<=0){
-          com_f=cl;
-          motorTurnleft_right(75);
-        }
-        else if((com_f-cl)>=0){
-          com_f=cl;
-          motorTurnleft_left(75);
-        }
-      }
-      else if(lest_cl <= com_f <= most_cl){
-        if((com_f-cb)<=0){
-          com_f=cb;
-         motorTurnleft_right(75);
-        }
-        else if((com_f-cb)>=0){
-          com_f=cb;
-          motorTurnleft_left(75);
-        }
-      }
-      else if(lest_cb <= com_f <= most_cb){
-        if((com_f-cr)<=0){
-          com_f=cr;
-          motorTurnleft_right(75);
-        }
-         else if((com_f-cr)>=0){
-          com_f=cr;
-          motorTurnleft_left(75);
-        }
-      }
-      else if(lest_cl <= com_f <= most_cl){
-        if((com_f-cf)<=0){
-          com_f=cf;
-          motorTurnleft_right(75);
-        }
-        else if
-        ((com_f-cf)<=0){
-        
-          com_f=cf;
-          motorTurnleft_left(75);
-        }
-      }
-
+    motorTurnleft(100);  
   }
-//  else if(inchesl > 6 && inches > 6 && inchesr < 4){  
-//    Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
-//  }
-//  else if((inchesl > 6) && (inches < 4) && (inchesr > 4)){ 
-//    Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
-//  }
-//  else if((inchesl > 6) && (inches > 4) && (inchesr > 4)){ 
-//    Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
-//  }
-//  else if((inchesl < 4 )&& (inches < 6) && (inchesr > 6)){ 
-//    Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
-//  }
-//  else if((inchesl < 4) && (inches < 4) && (inchesr < 4)){  
-//    Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
-//  }
+  else if(inchesl > 15 && inches > 15 && inchesr < 10){  
+    Serial.println("////////////////////////////// TURN LEFT LEFT&FORNT MORE /////////////////////////////");
+    motorTurnleft(100); 
+  }
+  else if((inchesl > 15) && (inches < 10) && (inchesr > 15)){ 
+    Serial.println("///////////////////////////////// TURN LEFT LEFT&RIGHT MORE///////////////////////////");
+    motorTurnleft(100); 
+  }
+  else if((inchesl > 15) && (inches > 15) && (inchesr > 15)){ 
+    Serial.println("///////////////////////////////// TURN LEFT LEFT&FORNT&RIGHT MORE/////////////////////");
+    motorTurnleft(100); 
+  }
+  else if((inchesl < 10 )&& (inches < 10) && (inchesr > 15)){ 
+    Serial.println("////////////////////////////// TURN RIGHT RIGHT MORE /////////////////////////////////");
+    motorTurnright(100);
+  }
+  else if((inchesl < 10) && (inches < 10) && (inchesr < 10)){  
+    Serial.println("///////////////////////////////// TURN BACK //////////////////////////////////////////");
+    motorTurnback(100);
+  }
   else { 
     Serial.println("//////////////////////////////////// Else ////////////////////////////////////////////");
-    motorFront(100); 
+    motorFront(120); 
   }
+}
+
+long microsecondsToCentimeters(long microseconds){
+      return microseconds / 29 / 2;
 }
 
 //Function Compass
@@ -149,9 +146,12 @@ void _compass() {
 
 void motorFront(int speed){
     Serial.println("----------------------------------- FRONT FRONT -------------------------------------"); 
-    digitalWrite(ledPinf, bLedOn);
+    digitalWrite(ledPinl, LOW);
+    digitalWrite(ledPinf, HIGH);
+    digitalWrite(ledPinr, LOW);
+    
   // Motor A left
-    analogWrite(enableA, speed-10);
+    analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
     digitalWrite(pinA2, HIGH);
  // Motor B
@@ -162,7 +162,10 @@ void motorFront(int speed){
 
 void motorTurnleft_left(int speed){
     Serial.println("----------------------------------- TURN LEFT LEFT -----------------------------------"); 
-    digitalWrite(ledPinl, bLedOn); 
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, LOW);
+     
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, HIGH);
@@ -193,7 +196,10 @@ void motorTurnleft_left(int speed){
 
 void motorTurnleft_right(int speed){
     Serial.println("----------------------------------- TURN LEFT RIGHT -----------------------------------"); 
-    digitalWrite(ledPinl, bLedOn);
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, LOW);
+    
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -223,7 +229,10 @@ void motorTurnleft_right(int speed){
 }
 void motorTurnright_left(int speed){
     Serial.println("----------------------------------- TURN RIGHT LEFT -----------------------------------");
-    digitalWrite(ledPinr, bLedOn);
+    digitalWrite(ledPinl, LOW);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, HIGH);
+    
     // Motor A
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -254,7 +263,10 @@ while(1){
 
 void motorTurnright_right(int speed){
     Serial.println("----------------------------------- TURN RIGHT RIGHT -----------------------------------");
-    digitalWrite(ledPinr, bLedOn);
+    digitalWrite(ledPinl, LOW);
+    digitalWrite(ledPinf, LOW);
+    digitalWrite(ledPinr, HIGH);
+    
     // Motor A 
     analogWrite(enableA, speed);
     digitalWrite(pinA1, LOW);
@@ -285,9 +297,9 @@ while(1){
 void motorTurnback_left(int speed){
 
     Serial.println("----------------------------------- TURN BACK LEFT -----------------------------------"); 
-    digitalWrite(ledPinl, bLedOn);
-    digitalWrite(ledPinf, bLedOn);
-    digitalWrite(ledPinr, bLedOn);
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, HIGH);
+    digitalWrite(ledPinr, HIGH);
     
     // Motor A 
     analogWrite(enableA, speed);
@@ -319,9 +331,9 @@ void motorTurnback_left(int speed){
 void motorTurnback_right(int speed){
 
     Serial.println("----------------------------------- TURN BACK RIGHT -----------------------------------"); 
-    digitalWrite(ledPinl, bLedOn);
-    digitalWrite(ledPinf, bLedOn);
-    digitalWrite(ledPinr, bLedOn);
+    digitalWrite(ledPinl, HIGH);
+    digitalWrite(ledPinf, HIGH);
+    digitalWrite(ledPinr, HIGH);
     
     // Motor A 
     analogWrite(enableA, speed);
@@ -350,5 +362,4 @@ void motorTurnback_right(int speed){
     Serial.println(inchesr);
   }
 }
-
 
