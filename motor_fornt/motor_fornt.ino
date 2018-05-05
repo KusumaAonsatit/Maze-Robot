@@ -28,7 +28,7 @@ void loop(){
  //peed = Serial.read(); 
  // analogWrite(speedPinA, speed); //ตั้งค่าความเร็ว PWM ผ่านตัวแปร ค่าต่ำลง มอเตอร์จะหมุนช้าลง
 
-  motorFront(100);
+  motorFront(120);
   
 //delay(5000);
 }

@@ -85,7 +85,12 @@ void loop() {
   pid.addNewSample(error);
   // PID feedback
   int powerDiff = int(pid.process());
-  Serial.print("Error: ");
+  Serial.print("Left: ");
+  Serial.print(Left);
+  Serial.print("Right: ");
+  Serial.print(Right); 
+
+  Serial.print("-------------Error: ");
   Serial.print(error);
   Serial.print(" | powerDiff: ");
   Serial.println(powerDiff);
