@@ -45,7 +45,7 @@ void motorFront(int speed){
 
  // Motor B
 
-    analogWrite(enableB, speed + 20); 
+    analogWrite(enableB, speed + 30); 
 
     digitalWrite(pinB1, LOW);
 

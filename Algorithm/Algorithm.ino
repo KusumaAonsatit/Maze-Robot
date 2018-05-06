@@ -55,7 +55,6 @@ void setup() {
 void loop() {
 
 long duration,duration2,duration3;
-//int cmR, cmF, cmL;
 
 digitalWrite(pingPin1, LOW);
 digitalWrite(pingPin1, HIGH);
@@ -192,4 +191,47 @@ void motorTurnback(int speed){
     digitalWrite(pinB1, LOW);
     digitalWrite(pinB2, HIGH);
 }
+
+     if(lest_cf <= com_f <= most_cf){
+        if((com_f-cl)<=0){
+          com_f=cl;
+          motorTurnleft_right(75);
+        }
+        else if((com_f-cl)>=0){
+          com_f=cl;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(lest_cl <= com_f <= most_cl){
+        if((com_f-cb)<=0){
+          com_f=cb;
+         motorTurnleft_right(75);
+        }
+        else if((com_f-cb)>=0){
+          com_f=cb;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(lest_cb <= com_f <= most_cb){
+        if((com_f-cr)<=0){
+          com_f=cr;
+          motorTurnleft_right(75);
+        }
+         else if((com_f-cr)>=0){
+          com_f=cr;
+          motorTurnleft_left(75);
+        }
+      }
+      else if(lest_cl <= com_f <= most_cl){
+        if((com_f-cf)<=0){
+          com_f=cf;
+          motorTurnleft_right(75);
+        }
+        else if
+        ((com_f-cf)<=0){
+        
+          com_f=cf;
+          motorTurnleft_left(75);
+        }
+      }
 

@@ -5,9 +5,8 @@ pinMode(inputPin, INPUT);
 }
 void loop(){
 int value= digitalRead(inputPin);
-if (value == HIGH)
-{
-i++;
-Serial.println(i);
-}
+  if (value == HIGH){
+    i++;
+    Serial.println(i);
+  }
 }
